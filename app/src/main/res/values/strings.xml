@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MyApp3</string>
+    <string name="edit_message">Enter a Message</string>
+    <string name="button_send">Send</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="Black_Button">Bet on black!</string>
+    <string name="Red_Button">Bet on red!</string>
+    <string name="EnterAmountText">Enter betting amount:</string>
+    <string name="DoubleText">Quick Double</string>
+    <string name="PlayBar">Play</string>
+    <string name="SettingsBar">Settings</string>
+    <string name="StartBalanceText">Starting Balance:</string>
+    <string name="TitleMartingaleRoulette">Martingale Roulette</string>
+    <string name="TitleSettings">Settings</string>
+    <string name="ResetButtonText">Reset</string>
+    <string name="DefaultBetText">Default Bet:</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="StartButton">Start Game!</string>
+</resources>
