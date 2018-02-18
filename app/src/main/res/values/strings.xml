@@ -18,4 +18,6 @@
     <string name="DefaultBetText">Default Bet:</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="StartButton">Start Game!</string>
+    <string name="FastSpin">Fast Spin:</string>
+    <string name="AutoDoubleTxt">Automate Bets:</string>
 </resources>

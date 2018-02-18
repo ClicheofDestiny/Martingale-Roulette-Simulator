@@ -7,6 +7,12 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/playbar"
         android:title="@string/PlayBar" />
+    <item
+        android:id="@+id/action_statistics"
+        android:icon="@drawable/statsicon"
+        android:title="Statistics"
+        app:showAsAction="ifRoom"
+        />
 
     <!-- Settings, should always be in the overflow -->
     <item

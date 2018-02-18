@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +24,11 @@ public class MainActivity extends AppCompatActivity {
     public int profit = 0;
     public int defaultBet;
     public int currLoss = 0;
+    public boolean autoDouble = true;
+    public boolean fastSpin = false;
+    public ArrayList<Character> history;
+    public ArrayList<Character> winHistory;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        history = new ArrayList<Character>();
+        winHistory = new ArrayList<Character>();
         balance = startingBalance;
         betAmount = 0;
 
@@ -38,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         startingBalance = intent.getIntExtra("MainBalance", 1000);
         TextView balanceText = (TextView) findViewById(R.id.Balance);
         balance = startingBalance;
-        balanceText.setText("Balance: " + Integer.toString(balance));
+        balanceText.setText("Balance: $" + Integer.toString(balance));
 
         defaultBet = intent.getIntExtra("MainDefaultBet", 10);
         EditText defaultText = (EditText) findViewById(R.id.Bet);
@@ -74,14 +82,17 @@ public class MainActivity extends AppCompatActivity {
             outcomeString = "0!";
             outBool = !currBet;
             resultImage.setImageResource(R.drawable.greenzeroroulette);
+            listAdd(history, 'G');
         } else if (outcome % 2 == 0){
             outcomeString = "Red!";
             outBool = false;
             resultImage.setImageResource(R.drawable.redoutcomeimg);
+            listAdd(history, 'R');
         } else {
             outcomeString = "Black!";
             outBool = true;
             resultImage.setImageResource(R.drawable.black);
+            listAdd(history, 'B');
         }
 
         if(currBet == outBool){
@@ -89,23 +100,29 @@ public class MainActivity extends AppCompatActivity {
             balance += betAmount;
             profit += betAmount;
             currLoss = 0;
-            betText.setText(Integer.toString(defaultBet));
+            listAdd(winHistory, 'W');
+            if(autoDouble) {
+                betText.setText(Integer.toString(defaultBet));
+            }
         } else {
             outcomeString = outcomeString + " You lose!";
             balance -= betAmount;
             currLoss += betAmount;
             profit -= betAmount;
-            betText.setText(Integer.toString(betAmount*2));
+            listAdd(winHistory, 'L');
+            if(autoDouble) {
+                betText.setText(Integer.toString(betAmount * 2));
+            }
         }
 
         TextView balanceText = (TextView) findViewById(R.id.Balance);
-        balanceText.setText("Balance: " + Integer.toString(balance));
+        balanceText.setText("Balance: $" + Integer.toString(balance));
 
         TextView resultText = (TextView) findViewById(R.id.ResultText);
         resultText.setText(outcomeString);
 
         TextView profitText = (TextView) findViewById(R.id.ProfitBox);
-        profitText.setText("Profit: " + Integer.toString(profit));
+        profitText.setText("Profit: $" + Integer.toString(profit));
 
     }
 
@@ -124,13 +141,22 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra("balance", balance);
                 intent.putExtra("defaultBet", defaultBet);
+                intent.putExtra("fastSpin", fastSpin);
+                intent.putExtra("autoDouble", autoDouble);
                 this.startActivityForResult(intent, 1);
                 return true;
-
+            case R.id.action_statistics:
+                // User chose the "Statistics" item, show stats
+                Intent intent = new Intent(this, StatsActivity.class);
+                intent.putExtra("history", history);
+                intent.putExtra("winHistory", winHistory);
+                this.startActivity(intent);
+                return true;
             case R.id.action_play:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
                 return true;
+
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -163,13 +189,22 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1) {
             if(resultCode == Activity.RESULT_OK){
-                startingBalance = data.getIntExtra("balanceSetting", 1000);
-                defaultBet = data.getIntExtra("resultDefaultBet", 10);
+                autoDouble = data.getBooleanExtra("autoDouble", true);
+                fastSpin = data.getBooleanExtra("fastSpin", false);
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
             }
         }
     }
+
+    public static void listAdd(ArrayList<Character> list, Character c){
+        list.add(c);
+        if(list.size() > 50) {
+            list.remove(list.size() - 1);
+        }
+    }
+
+
 }
 

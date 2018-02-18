@@ -9,11 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 public class SettingsActivity extends AppCompatActivity {
 
     public int startingBalance;
     public int defaultBet;
+    public boolean fastSpin;
+    public boolean autoDouble;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,16 +24,16 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setings);
 
         Intent intent = getIntent();
-        startingBalance = intent.getIntExtra("balance", 1000);
-        EditText balanceText = (EditText) findViewById(R.id.BalanceInput);
-        balanceText.setText(Integer.toString(startingBalance));
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        defaultBet = intent.getIntExtra("defaultBet", 10);
-        EditText defaultText = (EditText) findViewById(R.id.defaultInput);
-        defaultText.setText(Integer.toString(defaultBet));
+        autoDouble = intent.getBooleanExtra("autoDouble", true);
+        ToggleButton autoDoubleButton = (ToggleButton) findViewById(R.id.autoDoubleButton);
+        autoDoubleButton.setChecked(autoDouble);
+
+        fastSpin= intent.getBooleanExtra("fastSpin", false);
+        ToggleButton fastSpinButton = (ToggleButton) findViewById(R.id.FastSpinButton);
+        fastSpinButton.setChecked(fastSpin);
 
         startingBalance = 0;
     }
@@ -50,16 +53,14 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             case R.id.action_play:
                 //set balance to what has been entered
-                EditText balanceText = (EditText) findViewById(R.id.BalanceInput);
-                String balanceString = balanceText.getText().toString();
-                startingBalance = Integer.parseInt(balanceString);
-                EditText defaultText = (EditText) findViewById(R.id.defaultInput);
-                String defaultString = defaultText.getText().toString();
-                defaultBet = Integer.parseInt(defaultString);
+                ToggleButton autoDoubleButton = (ToggleButton) findViewById(R.id.autoDoubleButton);
+                autoDouble = autoDoubleButton.isChecked();
+                ToggleButton fastSpinButton = (ToggleButton) findViewById(R.id.FastSpinButton);
+                fastSpin = fastSpinButton.isChecked();
 
                 Intent returnIntent = new Intent();
-                returnIntent.putExtra("balanceSetting", startingBalance);
-                returnIntent.putExtra("resultDefaultBet", defaultBet);
+                returnIntent.putExtra("autoDouble", autoDouble);
+                returnIntent.putExtra("fastSpin", fastSpin);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             default:
@@ -68,12 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-    }
-
-    public void setStartingBalance(View view) {
-        EditText balanceText= (EditText) findViewById(R.id.StartingBalanceText);
-        String balanceString = balanceText.getText().toString();
-        startingBalance = Integer.parseInt(balanceString);
     }
 
 }
