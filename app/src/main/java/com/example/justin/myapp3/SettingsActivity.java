@@ -1,5 +1,6 @@
 package com.example.justin.myapp3;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,8 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
         autoDouble = intent.getBooleanExtra("autoDouble", true);
         ToggleButton autoDoubleButton = (ToggleButton) findViewById(R.id.autoDoubleButton);
@@ -38,20 +41,11 @@ public class SettingsActivity extends AppCompatActivity {
         startingBalance = 0;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-            case R.id.action_play:
+            case R.id.home:
                 //set balance to what has been entered
                 ToggleButton autoDoubleButton = (ToggleButton) findViewById(R.id.autoDoubleButton);
                 autoDouble = autoDoubleButton.isChecked();

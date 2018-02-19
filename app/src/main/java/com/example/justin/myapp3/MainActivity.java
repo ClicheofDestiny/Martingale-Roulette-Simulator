@@ -138,20 +138,20 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 // User chose the "Settings" item, show the app settings UI...
-                Intent intent = new Intent(this, SettingsActivity.class);
-                intent.putExtra("balance", balance);
-                intent.putExtra("defaultBet", defaultBet);
-                intent.putExtra("fastSpin", fastSpin);
-                intent.putExtra("autoDouble", autoDouble);
-                this.startActivityForResult(intent, 1);
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                settingsIntent.putExtra("balance", balance);
+                settingsIntent.putExtra("defaultBet", defaultBet);
+                settingsIntent.putExtra("fastSpin", fastSpin);
+                settingsIntent.putExtra("autoDouble", autoDouble);
+                this.startActivityForResult(settingsIntent, 1);
                 return true;
             case R.id.action_statistics:
                 // User chose the "Statistics" item, show stats
-                Intent intent = new Intent(this, StatsActivity.class);
-                intent.putExtra("history", history);
-                intent.putExtra("winHistory", winHistory);
-                this.startActivity(intent);
-                return true;
+                Intent statsIntent = new Intent(this, StatsActivity.class);
+                statsIntent.putExtra("history", history);
+                statsIntent.putExtra("winHistory", winHistory);
+                this.startActivity(statsIntent);
+            return true;
             case R.id.action_play:
                 // User chose the "Favorite" action, mark the current item
                 // as a favorite...
